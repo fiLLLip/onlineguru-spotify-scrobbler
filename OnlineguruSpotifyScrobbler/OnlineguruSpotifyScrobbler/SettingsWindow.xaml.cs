@@ -132,6 +132,7 @@ namespace OnlineguruSpotifyScrobbler
 
         private void StartScrobble()
         {
+            _spotifyStatus = null;
             _timer.Start();
             BtnStartScrobble.IsEnabled = false;
             BtnStopScrobble.IsEnabled = true;

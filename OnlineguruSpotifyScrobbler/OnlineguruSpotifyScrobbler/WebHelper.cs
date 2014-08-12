@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using OnlineguruSpotifyScrobbler.Properties;
 
 namespace OnlineguruSpotifyScrobbler
@@ -16,20 +17,20 @@ namespace OnlineguruSpotifyScrobbler
         {
             var payload = UTF8Encoding.UTF8.GetBytes(data);
             var client = new ExtendedWebClient();
-            client.Timeout = 5000;
+            client.Timeout = 3000;
             client.Headers["Content-Type"] = "application/json; charset=utf-8";
             client.UploadDataCompleted += client_UploadDataCompleted;
             client.UploadDataAsync(new Uri(address, UriKind.Absolute), payload);
         }
 
-        public static XElement DoSyncRequest(string address, string data)
+        public static T DoSyncRequest<T>(string address, string data)
         {
             var payload = UTF8Encoding.UTF8.GetBytes(data);
             var client = new ExtendedWebClient();
-            client.Timeout = 5000;
+            client.Timeout = 3000;
             client.Headers["Content-Type"] = "application/json; charset=utf-8";
             var result = client.UploadData(new Uri(address, UriKind.Absolute), payload);
-            return XElement.Parse(UTF8Encoding.UTF8.GetString(result));
+            return JsonConvert.DeserializeObject<T>(UTF8Encoding.UTF8.GetString(result));
         }
 
         private static void client_UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
