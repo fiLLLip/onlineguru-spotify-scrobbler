@@ -49,5 +49,7 @@
         <Button Name="BtnStartScrobble"  Content="Start" Margin="0,138,151,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="136" Click="StartScrobbleClick"/>
         <Label Content="Debug" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
         <CheckBox Name="ChkDebug" Content="" HorizontalAlignment="Left" Margin="89,78,0,0" VerticalAlignment="Top"/>
+        <Label Content="| x-www-form-urlencoded" HorizontalAlignment="Left" Margin="114,72,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="ChkUrlEncoded" Content="" HorizontalAlignment="Left" Margin="285,78,0,0" VerticalAlignment="Top"/>
     </Grid>
 </resources:CustomWindow>

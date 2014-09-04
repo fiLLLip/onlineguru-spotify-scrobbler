@@ -58,5 +58,17 @@ namespace OnlineguruSpotifyScrobbler.Properties {
                 this["Debug"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UrlEncoded {
+            get {
+                return ((bool)(this["UrlEncoded"]));
+            }
+            set {
+                this["UrlEncoded"] = value;
+            }
+        }
     }
 }

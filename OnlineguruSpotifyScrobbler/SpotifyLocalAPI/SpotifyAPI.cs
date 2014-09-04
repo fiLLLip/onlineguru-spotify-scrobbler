@@ -166,6 +166,7 @@ namespace JariZ
             get
             {
                 string a = recv("remote/status.json", true, true, _wait);
+                Console.WriteLine("status: {0}", a);
                 List<Responses.Status> d = (List<Responses.Status>)JsonConvert.DeserializeObject(a, typeof(List<Responses.Status>));
                 return d[0];
             }

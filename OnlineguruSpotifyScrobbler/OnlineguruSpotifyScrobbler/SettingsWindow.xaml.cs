@@ -49,6 +49,7 @@ namespace OnlineguruSpotifyScrobbler
             TxtAuth.Text = Settings.Default.Auth;
             TxtUrl.Text = Settings.Default.ScrobbleUrl;
             ChkDebug.IsChecked = Settings.Default.Debug;
+            ChkUrlEncoded.IsChecked = Settings.Default.UrlEncoded;
         }
 
         private void OnTimerTick(object sender, EventArgs e)
@@ -78,7 +79,14 @@ namespace OnlineguruSpotifyScrobbler
 
             //TODO: Send _spotifyStatus as json to webservice
             var data = JsonConvert.SerializeObject(_spotifyStatus);
-            WebClientHelper.DoAsyncRequest(Settings.Default.ScrobbleUrl, data);
+            if (!Settings.Default.UrlEncoded)
+            {
+                WebClientHelper.DoAsyncJsonRequest(Settings.Default.ScrobbleUrl, data);
+            }
+            else
+            {
+                WebClientHelper.DoAsyncUrlEncodedRequest(Settings.Default.ScrobbleUrl, data);
+            }
         }
 
         public static void RunAsynchronously(Action method, Action callback)
@@ -158,6 +166,7 @@ namespace OnlineguruSpotifyScrobbler
             Settings.Default.Auth = TxtAuth.Text;
             Settings.Default.ScrobbleUrl = TxtUrl.Text;
             Settings.Default.Debug = ChkDebug.IsChecked ?? false;
+            Settings.Default.UrlEncoded = ChkUrlEncoded.IsChecked ?? false;
             Settings.Default.Save();
             if (wasRunning)
             {

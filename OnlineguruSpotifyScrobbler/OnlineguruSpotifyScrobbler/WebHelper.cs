@@ -13,7 +13,7 @@ namespace OnlineguruSpotifyScrobbler
     static class WebClientHelper
     {
 
-        public static void DoAsyncRequest(string address, string data)
+        public static void DoAsyncJsonRequest(string address, string data)
         {
             var payload = UTF8Encoding.UTF8.GetBytes(data);
             var client = new ExtendedWebClient();
@@ -23,7 +23,7 @@ namespace OnlineguruSpotifyScrobbler
             client.UploadDataAsync(new Uri(address, UriKind.Absolute), payload);
         }
 
-        public static T DoSyncRequest<T>(string address, string data)
+        public static T DoSyncJsonRequest<T>(string address, string data)
         {
             var payload = UTF8Encoding.UTF8.GetBytes(data);
             var client = new ExtendedWebClient();
@@ -33,11 +33,46 @@ namespace OnlineguruSpotifyScrobbler
             return JsonConvert.DeserializeObject<T>(UTF8Encoding.UTF8.GetString(result));
         }
 
+        public static void DoAsyncUrlEncodedRequest(string address, string data)
+        {
+            var payload = "payload=" + data;
+            var client = new ExtendedWebClient();
+            client.Timeout = 3000;
+            client.Headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
+            client.UploadStringCompleted += client_UploadStringCompleted;
+            client.UploadStringAsync(new Uri(address, UriKind.Absolute), payload);
+        }
+
+        public static T DoSyncUrlEncodedRequest<T>(string address, string data)
+        {
+            var payload = "payload=" + data;
+            var client = new ExtendedWebClient();
+            client.Timeout = 3000;
+            client.Headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
+            var result = client.UploadString(new Uri(address, UriKind.Absolute), payload);
+            return JsonConvert.DeserializeObject<T>(result);
+        }
+
+        static void client_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                MessageBox.Show(e.Error.ToString());
+            }
+            else
+            {
+                if (Settings.Default.Debug)
+                {
+                    MessageBox.Show("Return from webrequest:" + Environment.NewLine + e.Result);
+                }
+            }
+        }
+
         private static void client_UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
         {
             if (e.Error != null)
             {
-                MessageBox.Show(e.Error.InnerException.ToString());
+                MessageBox.Show(e.Error.ToString());
             }
             else
             {
